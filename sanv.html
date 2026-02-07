@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Feliz San Valentín ❤️</title>
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  color: white;
+  background: linear-gradient(to right, #ff758c, #ff7eb3);
+  perspective: 1000px;
+  position: relative;
+}
+
+h1 {
+  margin-top: 30px;
+  font-family: 'Cursive';
+  font-size: 3em;
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+}
+
+/* Carta 3D */
+.carta {
+  width: 300px;
+  height: 200px;
+  background: #fff;
+  color: #000;
+  border-radius: 12px;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(0deg);
+  cursor: pointer;
+  transform-style: preserve-3d;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  overflow: hidden;
+}
+
+.carta:hover {
+  transform: translate(-50%, -50%) rotateX(2deg) rotateY(2deg) scale(1.05);
+}
+
+.tapa {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #ff4d6d;
+  top: 0;
+  left: 0;
+  border-radius: 12px;
+  transform-origin: top;
+  transition: transform 0.8s ease-in-out;
+  backface-visibility: hidden;
+}
+
+.mensaje {
+  opacity: 0;
+  padding: 15px;
+  text-align: left;
+  height: 100%;
+  overflow-y: auto;
+  font-size: 1em;
+  line-height: 1.5;
+  transform: rotateX(180deg);
+}
+
+.carta.abierta .tapa { transform: rotateX(-180deg); }
+.carta.abierta .mensaje { opacity: 1; transform: rotateX(0deg); }
+
+/* Botón corazón */
+.boton-corazon {
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3.5em;
+  color: red;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.boton-corazon:hover { transform: translateX(-50%) scale(1.3) rotate(-10deg); }
+
+/* Pantalla secundaria */
+.pantalla {
+  display: none;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(to right, #ff4d6d, #ff758c);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.pantalla img {
+  width: 200px;
+  margin: 10px;
+  border-radius: 15px;
+  border: 3px solid white;
+  box-shadow: 0 0 20px rgba(255,192,203,0.8);
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+.pantalla img:hover { transform: scale(1.1) rotate(-3deg); }
+
+.mensaje-romantico {
+  margin-top: 20px;
+  font-size: 1.2em;
+  line-height: 1.8;
+  font-family: 'Cursive', sans-serif;
+  text-shadow: 2px 2px 8px rgba(255,0,100,0.8);
+  border: 3px dashed white;
+  border-radius: 15px;
+  padding: 20px;
+  background: rgba(255,105,180,0.3);
+  animation: brillo 3s infinite alternate;
+}
+
+@keyframes brillo {
+  from { box-shadow: 0 0 10px rgba(255,255,255,0.5); }
+  to { box-shadow: 0 0 25px rgba(255,255,255,1); }
+}
+
+/* Corazones lluvia */
+.corazon-lluvia {
+  position: absolute;
+  font-size: 2em;
+  opacity: 0;
+  animation: caer linear infinite;
+}
+
+@keyframes caer {
+  0% { transform: translateY(-10%) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+}
+.modal img {
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 15px;
+  border: 3px solid white;
+  box-shadow: 0 0 25px rgba(255,255,255,0.9);
+}
+.cerrar {
+  position: absolute;
+  top: 20px; right: 40px;
+  font-size: 2em;
+  color: white;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<h1>Feliz San Valentín, mi amor ❤️</h1>
+
+<!-- Carta -->
+<div class="carta" onclick="abrirCarta()">
+  <div class="tapa"></div>
+  <div class="mensaje">
+    <h2>Mi amor ❤️</h2>
+    <p>
+      Aunque estemos a la distancia, quiero que sepas que te amo mucho.  
+      Siempre quiero estar contigo, soy muy feliz gracias a ti,  
+      y no sé cómo expresarte todo mi amor. 💌  
+      Cada día pienso en ti, en lo afortunado que soy de tenerte en mi vida,  
+      y aunque las palabras nunca serán suficientes, esta carta es un reflejo  
+      de lo que siento por ti.  
+      ¡Feliz San Valentín, mi vida! ❤️
+    </p>
+  </div>
+</div>
+
+<!-- Botón corazón -->
+<button class="boton-corazon" onclick="mostrarPantalla()">❤️</button>
+
+<!-- Pantalla secundaria -->
+<div class="pantalla" id="pantalla">
+  <h2>Con todo mi amor 💕</h2>
+
+  <!-- 3 imágenes principales -->
+  <img src="C:\Users\Jeniffer\Downloads\38833FF26BA1D.UnigramPreview_g9c9v27vpyspw!App\4915861216312363974_120.jpg" alt="Imagen 1" onclick="abrirModal(this.src)">
+  <img src="C:\Users\Jeniffer\Downloads\38833FF26BA1D.UnigramPreview_g9c9v27vpyspw!App\4915861216312363975_120.jpg" alt="Imagen 2" onclick="abrirModal(this.src)">
+  <img src="C:\Users\Jeniffer\Downloads\38833FF26BA1D.UnigramPreview_g9c9v27vpyspw!App\4915861216312363976_120.jpg" alt="Imagen 3" onclick="abrirModal(this.src)">
+
+  <!-- Texto romántico -->
+  <div class="mensaje-romantico">
+    Sin duda alguna eres lo más preciado que tengo en mi vida, nunca te dejaría ir tan fácil.  
+    Eres todo lo que soñaba y hoy que te tengo a mi lado disfruto tanto pasar el tiempo contigo.  
+    Cuando hacemos llamadas, jugamos o platicamos, me haces muy feliz.  
+    No sé expresarme porque no encuentro la manera de decirte todo lo que siento.  
+    Mi corazón palpita muy rápido cuando te veo y cuando te siento, es como si estuviera volando en las nubes.  
+    Amor, siento que solo somos tú y yo en nuestro mundo y que nadie nos interrumpa.  
+    Sin duda alguna mi amor es único por ti y te entregaré todo mi cariño.  
+    Te cuidaré siempre, mi niña hermosa.  
+    Sabes que siempre serás mi bebecita chiquita de ojitoshh bonitoshh
+  </div>
+
+  <!-- 3 imágenes adicionales debajo del texto -->
+  <div style="margin-top:20px;">
+    <img src="C:\Users\Jeniffer\Downloads\38833FF26BA1D.UnigramPreview_g9c9v27vpyspw!App\4915861216312363978_120.jpg" alt="Imagen 4" onclick="abrirModal(this.src)">
+    <img src="C:\Users\Jeniffer\Downloads\38833FF26BA1D.UnigramPreview_g9c9v27vpyspw!App\4915861216312363980_120.jpg" alt="Imagen 5" onclick="abrirModal(this.src)">
+    <img src="C:\Users\Jeniffer\Downloads\38833FF26BA1D.UnigramPreview_g9c9v27vpyspw!App\4915861216312363979_120.jpg" alt="Imagen 6" onclick="abrirModal(this.src)">
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <span class="cerrar" onclick="cerrarModal()">×</span>
+  <img id="modal-img" src="">
+</div>
+
+<script>
+function abrirCarta(){
+  document.querySelector('.carta').classList.toggle('abierta');
+}
+
+function mostrarPantalla(){
+  document.getElementById('pantalla').style.display = 'block';
+}
+
+// Modal
+function abrirModal(src){
+  document.getElementById('modal').style.display = 'flex';
+  document.getElementById('modal-img').src = src;
+}
+function cerrarModal(){
+  document.getElementById('modal').style.display = 'none';
+}
+
+// Lluvia de corazones
+function lluviaCorazones(){
+  for(let i=0;i<30;i++){
+    let c = document.createElement('div');
+    c.classList.add('corazon-lluvia');
+    c.innerText = ['💖','💘','💝','💗','💞'][Math.floor(Math.random()*5)];
+    c.style.left = Math.random()*100 + '%';
+    c.style.fontSize = (15 + Math.random()*30) + 'px';
+    c.style.animationDuration = (5 + Math.random()*10) + 's';
+    c.style.animationDelay = (Math.random()*10) + 's';
+    document.body.appendChild(c);
+  }
+}
+lluviaCorazones();
+</script>
+
+</body>
+</html>
